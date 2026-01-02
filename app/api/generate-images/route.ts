@@ -1,9 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { ImageModel, experimental_generateImage as generateImage } from "ai";
-import { openai } from "@ai-sdk/openai";
-import { fireworks } from "@ai-sdk/fireworks";
 import { replicate } from "@ai-sdk/replicate";
-import { vertex } from "@ai-sdk/google-vertex/edge";
 import { ProviderKey } from "@/lib/provider-config";
 import { GenerateImageRequest } from "@/lib/api-types";
 
@@ -22,21 +19,9 @@ interface ProviderConfig {
 }
 
 const providerConfig: Record<ProviderKey, ProviderConfig> = {
-  openai: {
-    createImageModel: openai.image,
-    dimensionFormat: "size",
-  },
-  fireworks: {
-    createImageModel: fireworks.image,
-    dimensionFormat: "aspectRatio",
-  },
   replicate: {
     createImageModel: replicate.image,
     dimensionFormat: "size",
-  },
-  vertex: {
-    createImageModel: vertex.image,
-    dimensionFormat: "aspectRatio",
   },
 };
 
@@ -72,11 +57,7 @@ export async function POST(req: NextRequest) {
       ...(config.dimensionFormat === "size"
         ? { size: DEFAULT_IMAGE_SIZE }
         : { aspectRatio: DEFAULT_ASPECT_RATIO }),
-      ...(provider !== "openai" && {
-        seed: Math.floor(Math.random() * 1000000),
-      }),
-      // Vertex AI only accepts a specified seed if watermark is disabled.
-      providerOptions: { vertex: { addWatermark: false } },
+      seed: Math.floor(Math.random() * 1000000),
     }).then(({ image, warnings }) => {
       if (warnings?.length > 0) {
         console.warn(
