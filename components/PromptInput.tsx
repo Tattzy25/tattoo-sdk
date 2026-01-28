@@ -7,7 +7,6 @@ import { TattooStyles } from "@/components/Tattoo-Styles/styles";
 import { TattooColors } from "@/components/Tattoo Colors/tattoo_colors";
 import { TattooAspectRatio } from "@/components/Tattoo Aspect Ratio/tattoo_aspect_ratio";
 // TattooPlacements removed from choices
-import { TattooMoods } from "@/components/Tattoo Moods/tattoo_moods";
 
 type QualityMode = "performance" | "quality";
 
@@ -74,7 +73,6 @@ export function PromptInput({
               <TattooStyles onClick={onToggleStyles} />
               <TattooColors />
               <TattooAspectRatio />
-              <TattooMoods />
             </div>
             <button
               onClick={handleSubmit}
