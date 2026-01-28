@@ -27,12 +27,12 @@ const providerConfig: Record<ProviderKey, ProviderConfig> = {
 
 const withTimeout = <T>(
   promise: Promise<T>,
-  timeoutMillis: number
+  timeoutMillis: number,
 ): Promise<T> => {
   return Promise.race([
     promise,
     new Promise<T>((_, reject) =>
-      setTimeout(() => reject(new Error("Request timed out")), timeoutMillis)
+      setTimeout(() => reject(new Error("Request timed out")), timeoutMillis),
     ),
   ]);
 };
@@ -62,14 +62,14 @@ export async function POST(req: NextRequest) {
       if (warnings?.length > 0) {
         console.warn(
           `Warnings [requestId=${requestId}, provider=${provider}, model=${modelId}]: `,
-          warnings
+          warnings,
         );
       }
       console.log(
         `Completed image request [requestId=${requestId}, provider=${provider}, model=${modelId}, elapsed=${(
           (performance.now() - startstamp) /
           1000
-        ).toFixed(1)}s].`
+        ).toFixed(1)}s].`,
       );
 
       return {
@@ -83,17 +83,15 @@ export async function POST(req: NextRequest) {
       status: "image" in result ? 200 : 500,
     });
   } catch (error) {
-    // Log full error detail on the server, but return a generic error message
-    // to avoid leaking any sensitive information to the client.
     console.error(
       `Error generating image [requestId=${requestId}, provider=${provider}, model=${modelId}]: `,
-      error
+      error,
     );
     return NextResponse.json(
       {
         error: "Failed to generate image. Please try again later.",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

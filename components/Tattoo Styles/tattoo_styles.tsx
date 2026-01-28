@@ -17,7 +17,7 @@ export function TattooStyles() {
     <Dialog>
       <DialogTrigger asChild>
         <Button variant="default" size="default" className="rounded-full">
-          Urban & Street Art
+          Styles
         </Button>
       </DialogTrigger>
       <DialogContent>
