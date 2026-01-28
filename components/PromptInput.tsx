@@ -4,8 +4,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { Textarea } from "@/components/ui/textarea";
 import { ModeToggle } from "@/components/ModeToggle";
 import { TattooStyles } from "@/components/Tattoo-Styles/styles";
-import { TattooColors } from "@/components/Tattoo Colors/tattoo_colors";
-import { TattooAspectRatio } from "@/components/Tattoo Aspect Ratio/tattoo_aspect_ratio";
+import { VibeCheck } from "@/components/VibeCheck";
 // TattooPlacements removed from choices
 
 type QualityMode = "performance" | "quality";
@@ -19,6 +18,7 @@ interface PromptInputProps {
   onModeChange: (mode: QualityMode) => void;
   onToggleStyles?: () => void;
   selectedStyle?: string | null;
+  onToggleVibe?: () => void;
 }
 
 export function PromptInput({
@@ -26,6 +26,7 @@ export function PromptInput({
   onSubmit,
   onToggleStyles,
   selectedStyle,
+  onToggleVibe,
 }: Readonly<PromptInputProps>) {
   const [input, setInput] = useState("");
 
@@ -71,8 +72,7 @@ export function PromptInput({
             <div className="flex items-center justify-between space-x-2">
               <ModeToggle />
               <TattooStyles onClick={onToggleStyles} />
-              <TattooColors />
-              <TattooAspectRatio />
+              <VibeCheck onClick={onToggleVibe} />
             </div>
             <button
               onClick={handleSubmit}

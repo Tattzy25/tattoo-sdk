@@ -43,6 +43,19 @@ export function ImagePlayground({}: {}) {
   const [selectedStyle, setSelectedStyle] = useState<string | null>(null);
   const [styleImages, setStyleImages] = useState<string[]>([]);
   const [stylesLoading, setStylesLoading] = useState(false);
+  const [showVibe, setShowVibe] = useState(false);
+
+  const vibeImages: string[] = [
+    // Colors first
+    "https://cdn.shopify.com/s/files/1/0649/4155/5787/files/BLACK_WHITE.png?v=1769632094",
+    "https://cdn.shopify.com/s/files/1/0649/4155/5787/files/COLORFUL.png?v=1769632094",
+    // Visual divider card
+    "__divider__",
+    // Aspect ratios
+    "https://cdn.shopify.com/s/files/1/0649/4155/5787/files/9_16.png?v=1769631343",
+    "https://cdn.shopify.com/s/files/1/0649/4155/5787/files/16_9.png?v=1769631343",
+    "https://cdn.shopify.com/s/files/1/0649/4155/5787/files/1_1.png?v=1769631344",
+  ];
 
   useEffect(() => {
     let mounted = true;
@@ -109,6 +122,7 @@ export function ImagePlayground({}: {}) {
           onModeChange={handleModeChange}
           onToggleStyles={() => setShowStyles((s) => !s)}
           selectedStyle={selectedStyle}
+          onToggleVibe={() => setShowVibe((s) => !s)}
         />
         <StyleCarousel
           visible={showStyles}
@@ -116,6 +130,11 @@ export function ImagePlayground({}: {}) {
           onSelect={(url) => {
             setSelectedStyle(url);
           }}
+        />
+        <StyleCarousel
+          visible={showVibe}
+          images={vibeImages}
+          emptyMessage="No vibes available."
         />
 
         <>

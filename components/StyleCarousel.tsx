@@ -39,9 +39,27 @@ export function StyleCarousel({
 
   return (
     <div className="mt-4">
-      <div className="overflow-x-auto">
-        <div className="flex gap-6 px-4 hide-scrollbar">
+      <div className="overflow-x-auto hide-scrollbar">
+        <div className="flex gap-6 px-4">
           {images.map((src, idx) => {
+            // Special sentinel for rendering a half-empty white divider card
+            if (src === "__divider__") {
+              return (
+                <div
+                  key={`divider-${idx}`}
+                  className="flex-shrink-0 w-32 aspect-[4/5] rounded-lg bg-white border border-dashed border-zinc-200 relative overflow-hidden"
+                >
+                  <Image
+                    src="https://cdn.shopify.com/s/files/1/0649/4155/5787/files/choose.png?v=1769632947"
+                    alt="Choose"
+                    fill
+                    sizes="(min-width: 1024px) 160px, 128px"
+                    className="object-contain"
+                  />
+                </div>
+              );
+            }
+
             if (hiddenMap[src]) return null;
 
             const getLabel = (url: string) => {

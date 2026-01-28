@@ -6,8 +6,7 @@ import { Stopwatch } from "./Stopwatch";
 import { cn } from "@/lib/utils";
 import { imageHelpers } from "@/lib/image-helpers";
 import { ProviderTiming } from "@/lib/image-types";
-import { Label } from "@/components/ui/label";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./ui/tooltip";
+// Label/Tooltip removed (model-id overlay hidden)
 
 interface ImageDisplayProps {
   provider: string;
@@ -85,22 +84,7 @@ export function ImageDisplay({
         )}
         onClick={handleImageClick}
       >
-        {(image || failed) && (
-          <div className="absolute top-2 left-2 max-w-[75%] bg-white/95 px-2 py-1 flex items-center gap-2 rounded-lg">
-            <TooltipProvider>
-              <Tooltip delayDuration={100}>
-                <TooltipTrigger asChild>
-                  <Label className="text-xs text-gray-900 truncate min-w-0 grow">
-                    {imageHelpers.formatModelId(modelId)}
-                  </Label>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>{modelId}</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          </div>
-        )}
+        {/* model-id label intentionally hidden for a clean image grid */}
         {image && !failed ? (
           <>
             {/* eslint-disable-next-line @next/next/no-img-element */}
