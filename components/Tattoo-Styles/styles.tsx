@@ -1,8 +1,17 @@
 import { Button } from "@/components/ui/button";
 
-export function TattooStyles() {
+interface TattooStylesProps {
+  onClick?: () => void;
+}
+
+export function TattooStyles({ onClick }: Readonly<TattooStylesProps>) {
   return (
-    <Button variant="default" size="default" className="rounded-full">
+    <Button
+      variant="default"
+      size="default"
+      className="rounded-full"
+      onClick={onClick}
+    >
       Styles
     </Button>
   );

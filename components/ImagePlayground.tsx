@@ -1,8 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import { useEffect } from "react";
 import { ModelSelect } from "@/components/ModelSelect";
 import { PromptInput } from "@/components/PromptInput";
+import { StyleCarousel } from "@/components/StyleCarousel";
 import { ModelCardCarousel } from "@/components/ModelCardCarousel";
 import {
   MODEL_CONFIGS,
@@ -15,9 +17,7 @@ import {
 import { useImageGeneration } from "@/hooks/use-image-generation";
 import { Header } from "./Header";
 
-export function ImagePlayground({
-}: {
-}) {
+export function ImagePlayground({}: {}) {
   const {
     images,
     timings,
@@ -38,6 +38,34 @@ export function ImagePlayground({
   const toggleView = () => {
     setShowProviders((prev) => !prev);
   };
+
+  const [showStyles, setShowStyles] = useState(false);
+  const [selectedStyle, setSelectedStyle] = useState<string | null>(null);
+  const [styleImages, setStyleImages] = useState<string[]>([]);
+  const [stylesLoading, setStylesLoading] = useState(false);
+
+  useEffect(() => {
+    let mounted = true;
+    const load = async () => {
+      if (!showStyles) return;
+      setStylesLoading(true);
+      try {
+        const module = await import("@/lib/style-images");
+        const imgs = await module.fetchStyleImages();
+        if (mounted) setStyleImages(imgs || []);
+      } catch (err) {
+        console.error("Failed to load style images:", err);
+        if (mounted) setStyleImages([]);
+      } finally {
+        if (mounted) setStylesLoading(false);
+      }
+    };
+
+    load();
+    return () => {
+      mounted = false;
+    };
+  }, [showStyles]);
 
   const handleModeChange = (newMode: ModelMode) => {
     setMode(newMode);
@@ -79,6 +107,15 @@ export function ImagePlayground({
           onToggleProviders={toggleView}
           mode={mode}
           onModeChange={handleModeChange}
+          onToggleStyles={() => setShowStyles((s) => !s)}
+          selectedStyle={selectedStyle}
+        />
+        <StyleCarousel
+          visible={showStyles}
+          images={styleImages}
+          onSelect={(url) => {
+            setSelectedStyle(url);
+          }}
         />
         <>
           {(() => {

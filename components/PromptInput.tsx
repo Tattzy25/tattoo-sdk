@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ArrowUp } from "lucide-react";
 import { Spinner } from "@/components/ui/spinner";
 import { Textarea } from "@/components/ui/textarea";
@@ -18,13 +18,28 @@ interface PromptInputProps {
   onToggleProviders: () => void;
   mode: QualityMode;
   onModeChange: (mode: QualityMode) => void;
+  onToggleStyles?: () => void;
+  selectedStyle?: string | null;
 }
 
 export function PromptInput({
   isLoading,
   onSubmit,
+  onToggleStyles,
+  selectedStyle,
 }: Readonly<PromptInputProps>) {
   const [input, setInput] = useState("");
+
+  useEffect(() => {
+    if (selectedStyle) {
+      // append a simple placeholder tag when a style is selected
+      setInput((prev) =>
+        prev.includes(`[style:${selectedStyle}]`)
+          ? prev
+          : `${prev} [style:${selectedStyle}]`,
+      );
+    }
+  }, [selectedStyle]);
 
   const handleSubmit = () => {
     if (!isLoading && input.trim()) {
@@ -56,7 +71,7 @@ export function PromptInput({
           <div className="flex items-center justify-between pt-1">
             <div className="flex items-center justify-between space-x-2">
               <ModeToggle />
-              <TattooStyles />
+              <TattooStyles onClick={onToggleStyles} />
               <TattooColors />
               <TattooAspectRatio />
               <TattooMoods />

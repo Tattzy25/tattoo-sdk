@@ -6,6 +6,14 @@
   .text-balance {
     text-wrap: balance;
   }
+  /* utility to visually hide scrollbars while keeping scrolling functional */
+  .hide-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none; /* Safari and Chrome */
+  }
 }
 
 @layer base {
@@ -107,4 +115,3 @@
   animation: highlight 2s cubic-bezier(0.4, 0, 0.2, 1);
   animation-fill-mode: forwards;
 }
-
