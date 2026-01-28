@@ -1,17 +1,23 @@
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogTrigger, DialogTitle } from "@/components/ui/dialog";
-import { CommandDialog, CommandInput, CommandList, CommandEmpty } from "@/components/ui/command";
+import {
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
+  CommandDialog,
+  CommandInput,
+  CommandList,
+  CommandEmpty,
+} from "@/components/ui/command";
 
 export function TattooStyles() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button
-          variant="default"
-          size="default"
-          className="rounded-full"
-        >
-          Styles
+        <Button variant="default" size="default" className="rounded-full">
+          Urban & Street Art
         </Button>
       </DialogTrigger>
       <DialogContent>

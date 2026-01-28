@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { ArrowUp, RefreshCw } from "lucide-react";
+import { ArrowUp } from "lucide-react";
 import { Spinner } from "@/components/ui/spinner";
 import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
+import { ModeToggle } from "@/components/ModeToggle";
 import { TattooStyles } from "@/components/Tattoo Styles/tattoo_styles";
 import { TattooColors } from "@/components/Tattoo Colors/tattoo_colors";
 import { TattooAspectRatio } from "@/components/Tattoo Aspect Ratio/tattoo_aspect_ratio";
-import { TattooPlacements } from "@/components/Tattoo Placements/tattoo_placements";
+// TattooPlacements removed from choices
 import { TattooMoods } from "@/components/Tattoo Moods/tattoo_moods";
 
 type QualityMode = "performance" | "quality";
@@ -23,7 +23,7 @@ interface PromptInputProps {
 export function PromptInput({
   isLoading,
   onSubmit,
-}: PromptInputProps) {
+}: Readonly<PromptInputProps>) {
   const [input, setInput] = useState("");
 
   const handleSubmit = () => {
@@ -41,7 +41,6 @@ export function PromptInput({
     }
   };
 
-
   return (
     <div className="w-full mb-8">
       <div className="bg-zinc-50 rounded-xl p-4">
@@ -56,18 +55,10 @@ export function PromptInput({
           />
           <div className="flex items-center justify-between pt-1">
             <div className="flex items-center justify-between space-x-2">
-              <Button
-                onClick={() => {}}
-                variant="default"
-                size="default"
-                className="rounded-full"
-              >
-                <RefreshCw className="w-4 h-4" />
-              </Button>
+              <ModeToggle />
               <TattooStyles />
               <TattooColors />
               <TattooAspectRatio />
-              <TattooPlacements />
               <TattooMoods />
             </div>
             <button
