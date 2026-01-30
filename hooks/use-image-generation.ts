@@ -10,6 +10,9 @@ interface UseImageGenerationReturn {
   isLoading: boolean;
   startGeneration: (
     prompt: string,
+    style: string | null,
+    color: string | null,
+    aspectRatio: string | null,
     providers: ProviderKey[],
     providerToModel: Record<ProviderKey, string>,
   ) => Promise<void>;
@@ -37,14 +40,17 @@ export function useImageGeneration(): UseImageGenerationReturn {
 
   const startGeneration = async (
     prompt: string,
+    style: string | null,
+    color: string | null,
+    aspectRatio: string | null,
     providers: ProviderKey[],
     providerToModel: Record<ProviderKey, string>,
   ) => {
     setActivePrompt(prompt);
     try {
       setIsLoading(true);
-      // Initialize a fixed number of result slots (4) with null images
-      const NUM_SLOTS = 4;
+      // Initialize a fixed number of result slots (2) with null images
+      const NUM_SLOTS = 2;
       const initialImages: ImageResult[] = Array.from({ length: NUM_SLOTS }).map((_, i) => {
         const provider = providers[i % providers.length];
         return {
@@ -70,22 +76,14 @@ export function useImageGeneration(): UseImageGenerationReturn {
       // Helper to fetch a single slot (may reuse providers if fewer providers than slots)
       const generateImage = async (slotIndex: number, provider: ProviderKey, modelId: string) => {
         const startTime = Date.now();
-        console.log(
-          `Generate image request [slot=${slotIndex}, provider=${provider}, modelId=${modelId}]`,
-        );
         try {
           const request = {
-            prompt,
-            provider,
-            modelId,
+            style: style || "",
+            color: color || "",
+            aspect_ratio: aspectRatio || "",
+            get_tatttied: prompt,
           };
 
-          // const response = await fetch("/api/generate-images", {
-          //   method: "POST",
-          //   headers: { "Content-Type": "application/json" },
-          //   body: JSON.stringify(request),
-          // });
-          
           // Temporary switch to Dify endpoint
           const response = await fetch("https://api.dify.ai/mcp/server/u4cbxV8X77O1fKSZ/mcp", {
             method: "POST",

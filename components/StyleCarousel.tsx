@@ -116,8 +116,8 @@ export function StyleCarousel({
                     setHiddenMap((prev) => ({ ...prev, [src]: true }));
                   }}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
-                <div className="absolute bottom-0 left-0 right-0 p-2 text-white text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-center">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent transition-opacity duration-200" />
+                <div className="absolute bottom-0 left-0 right-0 p-2 text-white text-xs font-medium transition-opacity duration-200 text-center">
                   {label}
                 </div>
               </button>

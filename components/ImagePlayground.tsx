@@ -9,6 +9,7 @@ import { StyleCarousel } from "@/components/StyleCarousel";
 import { PlaygroundControls } from "@/components/PlaygroundControls/PlaygroundControls";
 import { ModelCardCarousel } from "@/components/ModelCardCarousel";
 import { CustomStyleInput } from "@/components/CustomStyleInput/CustomStyleInput";
+import { WelcomeOverlay } from "@/components/WelcomeOverlay/WelcomeOverlay";
 import {
   MODEL_CONFIGS,
   PROVIDERS,
@@ -19,6 +20,7 @@ import {
 } from "@/lib/provider-config";
 import { useImageGeneration } from "@/hooks/use-image-generation";
 import { Header } from "./Header";
+import { LiquidMetalButton } from "@/components/ui/liquid-metal-button";
 
 export function ImagePlayground({}: {}) {
   const {
@@ -50,6 +52,7 @@ export function ImagePlayground({}: {}) {
   const [customColor, setCustomColor] = useState<string | null>(null);
   const [styleImages, setStyleImages] = useState<string[]>([]);
   const [stylesLoading, setStylesLoading] = useState(false);
+  const [isActivated, setIsActivated] = useState(false);
 
   const vibeImages: string[] = [
     // Colors first
@@ -110,28 +113,15 @@ export function ImagePlayground({}: {}) {
   const handlePromptSubmit = (newPrompt: string) => {
     const activeProviders = PROVIDER_ORDER.filter((p) => enabledProviders[p]);
     if (activeProviders.length > 0) {
-      // Append style tag if selected, but only for the API call
-      let finalPrompt = newPrompt;
-      if (selectedStyle) {
-        if (selectedStyle.includes("CUSTOM")) {
-          if (customStyle) {
-            finalPrompt += ` [style:${customStyle}]`;
-          }
-        } else {
-          finalPrompt += ` [style:${selectedStyle}]`;
-        }
-      }
-
-      if (selectedColor) {
-        if (selectedColor.includes("CUSTOM")) {
-          if (customColor) {
-            finalPrompt += ` [color:${customColor}]`;
-          }
-        } else {
-          finalPrompt += ` [color:${selectedColor}]`;
-        }
-      }
-      startGeneration(finalPrompt, activeProviders, providerToModel);
+      // Pass raw values to startGeneration, let the hook handle payload construction
+      startGeneration(
+        newPrompt,
+        customStyle || selectedStyle,
+        customColor || selectedColor,
+        selectedRatio,
+        activeProviders,
+        providerToModel
+      );
     }
     setShowProviders(false);
   };
@@ -140,23 +130,34 @@ export function ImagePlayground({}: {}) {
     <div className="min-h-screen bg-background py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <Header />
-        <PromptInput
-          onSubmit={handlePromptSubmit}
-          isLoading={isLoading}
-          selectedStyle={
-             selectedStyle?.includes("CUSTOM")
-               ? (customStyle ? `Custom: ${customStyle}` : null)
-               : selectedStyle
-          }
-          onClearStyle={() => {
-            setSelectedStyle(null);
-            setCustomStyle(null);
-          }}
-          selectedColor={selectedColor}
-          onClearColor={() => setSelectedColor(null)}
-          selectedRatio={selectedRatio}
-          onClearRatio={() => setSelectedRatio(null)}
-        />
+        
+        <div className="relative mb-4">
+          <AnimatePresence>
+            {!isActivated && (
+              <WelcomeOverlay onActivate={() => setIsActivated(true)} />
+            )}
+          </AnimatePresence>
+          
+          <div className={!isActivated ? "opacity-0 pointer-events-none" : ""}>
+            <PromptInput
+              onSubmit={handlePromptSubmit}
+              isLoading={isLoading}
+              selectedStyle={
+                 selectedStyle?.includes("CUSTOM")
+                   ? (customStyle ? `Custom: ${customStyle}` : null)
+                   : selectedStyle
+              }
+              onClearStyle={() => {
+                setSelectedStyle(null);
+                setCustomStyle(null);
+              }}
+              selectedColor={selectedColor}
+              onClearColor={() => setSelectedColor(null)}
+              selectedRatio={selectedRatio}
+              onClearRatio={() => setSelectedRatio(null)}
+            />
+          </div>
+        </div>
         
         <PlaygroundControls
           mode={mode}

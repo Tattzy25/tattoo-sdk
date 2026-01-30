@@ -90,8 +90,6 @@ export function ModelCardCarousel({ models }: ModelCardCarouselProps) {
           ))}
         </CarouselContent>
 
-        <CarouselPrevious className="left-0 bg-background/80 backdrop-blur-sm" />
-        <CarouselNext className="right-0 bg-background/80 backdrop-blur-sm" />
       </Carousel>
 
       {/* Dot Indicators */}
