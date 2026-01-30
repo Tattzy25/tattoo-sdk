@@ -5,6 +5,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { ModeToggle } from "@/components/ModeToggle";
 import { SelectedStyleBadge } from "@/components/SelectedStyleBadge/SelectedStyleBadge";
 import { LiquidMetalButton } from "@/components/ui/liquid-metal-button";
+import { useToast } from "@/hooks/use-toast";
 
 interface PromptInputProps {
   onSubmit: (prompt: string) => void;
@@ -28,23 +29,62 @@ export function PromptInput({
   onClearRatio,
 }: Readonly<PromptInputProps>) {
   const [input, setInput] = useState("");
+  const { toast } = useToast();
 
   useEffect(() => {
     // URL injection removed
   }, [selectedStyle]);
 
-  const handleSubmit = () => {
-    if (!isLoading && input.trim().length >= 10) {
-      onSubmit(input);
+  const validateAndSubmit = () => {
+    if (isLoading) return;
+
+    if (!selectedStyle) {
+        toast({
+            title: "Style required",
+            description: "Please select a style to proceed.",
+            variant: "destructive",
+        });
+        return;
     }
+
+    if (!selectedColor) {
+        toast({
+            title: "Color required",
+            description: "Please select a color/vibe to proceed.",
+            variant: "destructive",
+        });
+        return;
+    }
+
+    if (!selectedRatio) {
+        toast({
+            title: "Size required",
+            description: "Please select a size (aspect ratio) to proceed.",
+            variant: "destructive",
+        });
+        return;
+    }
+
+    if (input.trim().length < 10) {
+        toast({
+            title: "More detail needed",
+            description: "Please enter at least 10 characters for your answer.",
+            variant: "destructive",
+        });
+        return;
+    }
+
+    onSubmit(input);
+  };
+
+  const handleSubmit = () => {
+    validateAndSubmit();
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
-      if (!isLoading && input.trim().length >= 10) {
-        onSubmit(input);
-      }
+      validateAndSubmit();
     }
   };
 
@@ -52,8 +92,8 @@ export function PromptInput({
     <div className="w-full">
       <div className="bg-zinc-50 rounded-xl p-4">
         <div className="flex flex-col gap-3">
-          <div className="w-[90%] md:w-[80%] mx-auto mb-6 mt-2 text-center">
-            <h3 className="text-lg md:text-xl font-medium text-zinc-900 leading-relaxed tracking-tight font-orbitron italic">
+          <div className="w-full px-2 mx-auto mb-6 mt-2 text-center">
+            <h3 className="text-2xl md:text-3xl font-medium text-zinc-900 leading-relaxed tracking-tight font-orbitron italic">
               &quot;If the ink could speak and looked you dead in the eyes — WHO THE FUCK ARE YOU, REALLY? — what would you say?&quot;
             </h3>
           </div>

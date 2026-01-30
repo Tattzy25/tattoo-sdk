@@ -20,6 +20,7 @@
   },
   "registries": {
     "@jolyui": "https://www.jolyui.dev/r/{name}.json",
-    "@pastecn": "https://pastecn.com/r/{name}"
+    "@pastecn": "https://pastecn.com/r/{name}",
+    "@fab-ui": "https://fab-ui.com/r/{name}.json"
   }
 }

@@ -73,19 +73,20 @@ export function useImageGeneration(): UseImageGenerationReturn {
         ) as Record<ProviderKey, ProviderTiming>,
       );
 
-      // Helper to fetch a single slot (may reuse providers if fewer providers than slots)
+          // Helper to fetch a single slot (may reuse providers if fewer providers than slots)
       const generateImage = async (slotIndex: number, provider: ProviderKey, modelId: string) => {
         const startTime = Date.now();
         try {
           const request = {
-            style: style || "",
-            color: color || "",
-            aspect_ratio: aspectRatio || "",
-            get_tatttied: prompt,
+            prompt,
+            provider,
+            modelId,
+            style,
+            color,
+            aspectRatio,
           };
 
-          // Temporary switch to Dify endpoint
-          const response = await fetch("https://api.dify.ai/mcp/server/u4cbxV8X77O1fKSZ/mcp", {
+          const response = await fetch("/api/generate-images", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(request),

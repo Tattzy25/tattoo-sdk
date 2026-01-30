@@ -1,6 +1,5 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { imageHelpers } from "@/lib/image-helpers";
-import { ReplicateIcon } from "@/lib/logos";
 import { ProviderKey } from "@/lib/provider-config";
 import { cn } from "@/lib/utils";
 import {
@@ -31,14 +30,6 @@ interface ModelSelectProps {
   modelId: string;
 }
 
-const PROVIDER_ICONS = {
-  replicate: ReplicateIcon,
-} as const;
-
-const PROVIDER_LINKS = {
-  replicate: "replicate",
-} as const;
-
 export function ModelSelect({
   label,
   models,
@@ -51,8 +42,6 @@ export function ModelSelect({
   failed,
   modelId,
 }: ModelSelectProps) {
-  const Icon = PROVIDER_ICONS[providerKey];
-
   return (
     <Card className={cn(`w-full transition-opacity`)}>
       <CardContent className="pt-6 h-full">

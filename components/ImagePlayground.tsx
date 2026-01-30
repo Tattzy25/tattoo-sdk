@@ -107,7 +107,7 @@ export function ImagePlayground({}: {}) {
   };
 
   const providerToModel = {
-    replicate: selectedModels.replicate,
+    mcp: selectedModels.mcp,
   };
 
   const handlePromptSubmit = (newPrompt: string) => {

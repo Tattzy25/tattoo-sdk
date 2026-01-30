@@ -1,4 +1,4 @@
-export type ProviderKey = "replicate";
+export type ProviderKey = "mcp";
 export type ModelMode = "performance" | "quality";
 
 export const PROVIDERS: Record<
@@ -10,38 +10,27 @@ export const PROVIDERS: Record<
     models: string[];
   }
 > = {
-  replicate: {
-    displayName: "Replicate",
-    iconPath: "/provider-icons/replicate.svg",
+  mcp: {
+    displayName: "Tattty AI",
+    iconPath: "/provider-icons/replicate.svg", // Keeping existing icon to prevent 404
     color: "from-purple-500 to-blue-500",
     models: [
-      "black-forest-labs/flux-1.1-pro",
-      "black-forest-labs/flux-1.1-pro-ultra",
-      "black-forest-labs/flux-dev",
-      "black-forest-labs/flux-pro",
-      "black-forest-labs/flux-schnell",
-      "ideogram-ai/ideogram-v2",
-      "ideogram-ai/ideogram-v2-turbo",
-      "luma/photon",
-      "luma/photon-flash",
-      "recraft-ai/recraft-v3",
-      "stability-ai/stable-diffusion-3.5-large",
-      "stability-ai/stable-diffusion-3.5-large-turbo",
+      "default"
     ],
   },
 };
 
 export const MODEL_CONFIGS: Record<ModelMode, Record<ProviderKey, string>> = {
   performance: {
-    replicate: "stability-ai/stable-diffusion-3.5-large-turbo",
+    mcp: "default",
   },
   quality: {
-    replicate: "stability-ai/stable-diffusion-3.5-large",
+    mcp: "default",
   },
 };
 
 export const PROVIDER_ORDER: ProviderKey[] = [
-  "replicate",
+  "mcp",
 ];
 
 export const initializeProviderRecord = <T>(defaultValue?: T) =>
