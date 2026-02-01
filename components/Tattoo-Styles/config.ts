@@ -19,7 +19,7 @@ export const TATTOO_STYLES: TattooOption[] = [
     id: "fine-line",
     label: "Fine Line",
     value: "Fine Line",
-    imageUrl: "/fine-line.png",
+    imageUrl: "/Fine line.png",
     group: "style"
   },
   {
@@ -27,14 +27,16 @@ export const TATTOO_STYLES: TattooOption[] = [
     label: "Trash Polka",
     value: "Trash Polka",
     imageUrl: "/trash-polka.png",
-    group: "style"
+    group: "style",
+    isHot: true
   },
   {
     id: "blackwork",
     label: "Blackwork",
     value: "Blackwork",
     imageUrl: "/blackwork.png",
-    group: "style"
+    group: "style",
+    isHot: true
   },
   {
     id: "tribal",
@@ -62,7 +64,8 @@ export const TATTOO_STYLES: TattooOption[] = [
     label: "Realism",
     value: "Realism",
     imageUrl: "/realism.png",
-    group: "style"
+    group: "style",
+    isHot: true
   },
   {
     id: "black-and-grey",

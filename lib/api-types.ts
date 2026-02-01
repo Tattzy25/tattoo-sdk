@@ -20,5 +20,6 @@ export interface TattooOption {
   value: string; // The value sent to the API
   imageUrl: string;
   isCustom?: boolean;
+  isHot?: boolean;
   group: "style" | "color" | "ratio" | "divider";
 }

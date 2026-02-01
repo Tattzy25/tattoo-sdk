@@ -44,11 +44,6 @@ export function PromptInput({
 
   return (
     <div className="w-full">
-      <div className="w-full mx-auto mb-6 mt-2 text-center">
-        <h3 className="text-xl md:text-2xl font-medium text-foreground leading-relaxed tracking-tight font-orbitron italic">
-          &quot;If the ink could speak and looked you dead in the eyes — WHO THE FUCK ARE YOU, REALLY? — what would you say?&quot;
-        </h3>
-      </div>
       <div className="bg-muted/30 border border-border/50 rounded-xl p-4">
         <div className="flex flex-col gap-3">
           <Textarea
@@ -61,7 +56,6 @@ export function PromptInput({
           />
           <div className="flex items-center justify-center pt-1 pb-[10px]">
             <div className="flex items-center gap-2">
-              <ModeToggle />
               {selectedStyle && (
                 <SelectedStyleBadge
                   selectedStyle={selectedStyle}

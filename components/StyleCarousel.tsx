@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { Card } from "@/components/ui/card";
 import { TattooOption } from "@/lib/api-types";
+import { LiquidMetalButton } from "@/components/ui/liquid-metal-button";
 
 interface CarouselItemProps {
   option: TattooOption;
@@ -14,17 +15,36 @@ interface CarouselItemProps {
 
 function CarouselItem({ option, isSelected, onClick, selectedClassName }: CarouselItemProps) {
   return (
-    <button
+    <div
+      role="button"
+      tabIndex={0}
       onClick={onClick}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          onClick();
+        }
+      }}
       aria-label={`Select ${option.label}`}
       data-selected={isSelected ? "true" : undefined}
       className={`
         group relative flex-shrink-0 w-32 flex flex-col items-center gap-3 transition-all duration-200
         ${isSelected ? "scale-[1.05]" : "hover:scale-[1.02]"}
         ${selectedClassName ?? ""}
+        cursor-pointer
       `}
     >
       <div className="relative w-32 aspect-[4/5]">
+        {option.isHot && (
+          <div className="absolute -top-3 -right-3 z-20 scale-[0.6] origin-center pointer-events-none">
+            <LiquidMetalButton
+              label=""
+              viewMode="icon"
+              icon={<span className="text-2xl">🔥</span>}
+              animate={true}
+            />
+          </div>
+        )}
         <Card
           className={`
             w-full h-full p-1.5 overflow-hidden transition-all duration-200
@@ -51,7 +71,7 @@ function CarouselItem({ option, isSelected, onClick, selectedClassName }: Carous
       `}>
         {option.label}
       </span>
-    </button>
+    </div>
   );
 }
 

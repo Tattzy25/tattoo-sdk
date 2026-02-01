@@ -17,6 +17,7 @@ import { TATTOO_COLORS } from "@/components/Tattoo Colors/config";
 import { TATTOO_RATIOS } from "@/components/Tattoo Aspect Ratio/config";
 import { TattooOption } from "@/lib/api-types";
 import { ImageComparisonDemo } from "@/components/TaTTTyComparisson";
+import { GenerateButton } from "@/components/Generate-Button/GenerateButton";
 
 export function ImagePlayground({}: {}) {
   const {
@@ -141,16 +142,10 @@ export function ImagePlayground({}: {}) {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground pb-4 overflow-x-hidden">
+    <div className="min-h-screen bg-transparent text-foreground pb-4 overflow-x-hidden">
       <div className="w-full px-[10px] pt-[10px]">
-        <div className="relative mb-4 w-full">
-          <AnimatePresence>
-            {!isActivated && (
-              <WelcomeOverlay onActivate={() => setIsActivated(true)} />
-            )}
-          </AnimatePresence>
-
-          <div className={!isActivated ? "opacity-0 pointer-events-none" : ""}>
+        <div className="relative mb-2 w-full grid grid-cols-1">
+          <div className={`col-start-1 row-start-1 w-full transition-opacity duration-500 ${!isActivated ? "opacity-0 pointer-events-none" : "opacity-100"}`}>
             <PromptInput
               value={promptInput}
               onChange={setPromptInput}
@@ -173,10 +168,19 @@ export function ImagePlayground({}: {}) {
               onClearRatio={() => setSelectedRatioId(null)}
             />
           </div>
+
+          <AnimatePresence>
+            {!isActivated && (
+              <WelcomeOverlay 
+                onActivate={() => setIsActivated(true)} 
+                className="col-start-1 row-start-1"
+              />
+            )}
+          </AnimatePresence>
         </div>
       </div>
 
-      <div className="w-full px-[10px] mx-auto max-w-7xl">
+      <div className="w-full px-[10px] mx-auto">
         <PlaygroundControls
           activeCarousel={activeCarousel}
           onCarouselChange={setActiveCarousel}
@@ -237,26 +241,10 @@ export function ImagePlayground({}: {}) {
         />
 
         <div className="flex justify-center my-20 py-12 relative z-10">
-          <div
-            className={
-              isLoading
-                ? "opacity-50 pointer-events-none scale-[1.75] origin-center"
-                : "scale-[1.75] origin-center"
-            }
-          >
-            <LiquidMetalButton
-              label={isLoading ? "INKING..." : "INK ME UP"}
-              onClick={handlePromptSubmit}
-              viewMode="text"
-              icon={
-                <img
-                  src="/sparkles.svg"
-                  alt="sparkles"
-                  style={{ width: "20px", height: "20px" }}
-                />
-              }
-            />
-          </div>
+          <GenerateButton
+            onClick={handlePromptSubmit}
+            isLoading={isLoading}
+          />
         </div>
 
         <div className="flex justify-center w-full mx-auto mt-6">

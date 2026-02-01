@@ -3,6 +3,7 @@
 import { Sparkles } from "lucide-react"
 import type React from "react"
 import { useEffect, useMemo, useRef, useState } from "react"
+import { cn } from "@/lib/utils"
 
 interface LiquidMetalButtonProps {
   label?: string
@@ -10,9 +11,10 @@ interface LiquidMetalButtonProps {
   viewMode?: "text" | "icon"
   animate?: boolean
   icon?: React.ReactNode
+  className?: string
 }
 
-export function LiquidMetalButton({ label = "Get Started", onClick, viewMode = "text", animate = true, icon }: LiquidMetalButtonProps) {
+export function LiquidMetalButton({ label = "Get Started", onClick, viewMode = "text", animate = true, icon, className }: LiquidMetalButtonProps) {
   const [isHovered, setIsHovered] = useState(false)
   const [isPressed, setIsPressed] = useState(false)
   const [ripples, setRipples] = useState<Array<{ x: number; y: number; id: number }>>([])
@@ -159,7 +161,7 @@ export function LiquidMetalButton({ label = "Get Started", onClick, viewMode = "
   }
 
   return (
-    <div className="relative inline-block">
+    <div className={cn("relative inline-block", className)}>
       <div
         style={{
           perspective: "1000px",

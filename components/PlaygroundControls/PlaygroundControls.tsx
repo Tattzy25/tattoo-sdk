@@ -13,7 +13,7 @@ export function PlaygroundControls({
   onCarouselChange,
 }: Readonly<PlaygroundControlsProps>) {
   return (
-    <div className="flex items-center justify-center space-x-2 py-2">
+    <div className="flex items-center justify-center gap-12 py-2">
       <TattooStyles
         isActive={activeCarousel === "style"}
         onClick={() => onCarouselChange("style")}

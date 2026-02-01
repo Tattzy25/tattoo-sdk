@@ -14,6 +14,7 @@ export function VibeCheck({ onClick, isActive }: Readonly<VibeCheckProps>) {
       onClick={onClick}
       viewMode="text"
       animate={isActive}
+      className={isActive ? "rounded-[100px] shadow-[0_0_8px_rgba(255,255,255,0.9)] border border-white" : ""}
     />
   );
 }
