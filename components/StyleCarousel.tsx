@@ -2,7 +2,8 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import { LiquidMetalCard } from "@/components/ui/liquid-metal-card";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { TattooOption } from "@/lib/api-types";
 
 interface CarouselItemProps {
@@ -13,21 +14,9 @@ interface CarouselItemProps {
 }
 
 function CarouselItem({ option, isSelected, onClick, selectedClassName }: CarouselItemProps) {
-  const [isHovered, setIsHovered] = useState(false);
-  const isPressed = false; // We can add press state if needed, but hover/select is main focus
-
-  // Shadow logic copied from LiquidMetalButton to match the effect
-  const boxShadow = isSelected
-    ? "0px 0px 0px 1px rgba(0, 0, 0, 0.5), 0px 1px 2px 0px rgba(0, 0, 0, 0.3)"
-    : isHovered
-      ? "0px 0px 0px 1px rgba(0, 0, 0, 0.4), 0px 12px 6px 0px rgba(0, 0, 0, 0.05), 0px 8px 5px 0px rgba(0, 0, 0, 0.1), 0px 4px 4px 0px rgba(0, 0, 0, 0.15), 0px 1px 2px 0px rgba(0, 0, 0, 0.2)"
-      : "0px 0px 0px 1px rgba(0, 0, 0, 0.3), 0px 36px 14px 0px rgba(0, 0, 0, 0.02), 0px 20px 12px 0px rgba(0, 0, 0, 0.08), 0px 9px 9px 0px rgba(0, 0, 0, 0.12), 0px 2px 5px 0px rgba(0, 0, 0, 0.15)";
-
   return (
     <button
       onClick={onClick}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
       aria-label={`Select ${option.label}`}
       data-selected={isSelected ? "true" : undefined}
       className={`
@@ -36,36 +25,39 @@ function CarouselItem({ option, isSelected, onClick, selectedClassName }: Carous
         ${selectedClassName ?? ""}
       `}
     >
-      <div 
-        className={`
-          relative w-32 aspect-[4/5] rounded-lg overflow-hidden transition-all duration-200
-        `}
-        style={{
-          boxShadow: boxShadow,
-          transition: "box-shadow 0.15s cubic-bezier(0.4, 0, 0.2, 1)"
-        }}
-      >
-        <LiquidMetalCard
-          speed={isSelected || isHovered ? 0.6 : 0}
-          className="w-full h-full p-[3px] rounded-xl"
+      <div className="relative w-32 aspect-[4/5]">
+        <Card
+          className={`
+            w-full h-full p-1.5 overflow-hidden transition-all duration-200
+            ${isSelected 
+              ? "border-primary ring-2 ring-primary ring-offset-2 ring-offset-background shadow-lg" 
+              : "hover:border-primary/50 hover:shadow-md"
+            }
+          `}
         >
-          <div className="relative w-full h-full rounded-[calc(1rem-1px)] overflow-hidden">
+          <div className="relative w-full h-full rounded-lg overflow-hidden bg-muted/20">
             <Image
               src={option.imageUrl}
               alt={option.label}
               fill
               sizes="(min-width: 1024px) 160px, 128px"
-              className="object-cover"
+              className="object-cover transition-transform duration-300 group-hover:scale-110"
             />
           </div>
-        </LiquidMetalCard>
+        </Card>
       </div>
-      <span className={`
-        text-sm font-medium tracking-wide transition-colors duration-200
-        ${isSelected ? "text-primary font-bold" : "text-muted-foreground group-hover:text-foreground"}
-      `}>
+      <Badge 
+        variant="secondary"
+        className={`
+          w-full justify-center px-2 py-1.5 text-xs font-semibold tracking-wide border whitespace-nowrap overflow-hidden text-ellipsis
+          ${isSelected 
+            ? "bg-primary text-primary-foreground border-primary" 
+            : "bg-muted text-muted-foreground hover:bg-muted/80 border-transparent"
+          }
+        `}
+      >
         {option.label}
-      </span>
+      </Badge>
     </button>
   );
 }
@@ -104,9 +96,9 @@ export function StyleCarousel({
   }
 
   return (
-    <div className="mt-4">
-      <div className="overflow-x-auto hide-scrollbar">
-        <div className="flex gap-6 px-4 py-[10px]">
+    <div className="mt-4 w-full">
+      <div className="overflow-x-auto hide-scrollbar w-full touch-pan-x">
+        <div className="flex gap-6 px-4 py-[10px] w-fit mx-auto">
           {options.map((option, idx) => {
             // Special sentinel for divider - currently we don't have this in the config, 
             // but if we did, we'd handle it. 
