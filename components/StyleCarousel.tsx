@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { TattooOption } from "@/lib/api-types";
 
 interface CarouselItemProps {
@@ -46,18 +45,12 @@ function CarouselItem({ option, isSelected, onClick, selectedClassName }: Carous
           </div>
         </Card>
       </div>
-      <Badge 
-        variant="secondary"
-        className={`
-          w-full justify-center px-2 py-1.5 text-xs font-semibold tracking-wide border whitespace-nowrap overflow-hidden text-ellipsis
-          ${isSelected 
-            ? "bg-primary text-primary-foreground border-primary" 
-            : "bg-muted text-muted-foreground hover:bg-muted/80 border-transparent"
-          }
-        `}
-      >
+      <span className={`
+        text-sm font-medium tracking-wide transition-colors duration-200
+        ${isSelected ? "text-primary font-bold" : "text-muted-foreground group-hover:text-foreground"}
+      `}>
         {option.label}
-      </Badge>
+      </span>
     </button>
   );
 }

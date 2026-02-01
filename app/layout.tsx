@@ -29,30 +29,29 @@ const orbitron = Orbitron({
  };
  
  export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  return (
-    <html
-      lang="en"
-      suppressHydrationWarning
-      className={`${geistSans.variable} ${geistMono.variable} ${orbitron.variable}`}
-    >
-      <head />
-      <body className="font-sans antialiased">
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
+   children,
+ }: Readonly<{
+   children: React.ReactNode;
+ }>) {
+   return (
+     <html
+       lang="en"
+       suppressHydrationWarning
+       className={`${geistSans.variable} ${geistMono.variable} ${orbitron.variable}`}
+     >
+       <body className="font-sans antialiased">
+         <ThemeProvider
+           attribute="class"
+           defaultTheme="system"
+           enableSystem
+           disableTransitionOnChange
         >
           {children}
           <Toaster />
           <Analytics />
         </ThemeProvider>
-      </body>
-    </html>
-  );
-}
+       </body>
+     </html>
+   );
+ }
  

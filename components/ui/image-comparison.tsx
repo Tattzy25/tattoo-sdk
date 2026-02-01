@@ -26,7 +26,7 @@ export function ImageComparison({
   initialPosition = 50,
   orientation = "horizontal",
   showLabels = true,
-  sliderColor = "hsl(var(--background))",
+  sliderColor = "currentColor",
 }: ImageComparisonProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState(initialPosition);

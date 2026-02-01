@@ -3,7 +3,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { ModeToggle } from "@/components/ModeToggle";
 import { SelectedStyleBadge } from "@/components/SelectedStyleBadge/SelectedStyleBadge";
 import { useToast } from "@/hooks/use-toast";
-import { cn } from "@/lib/utils";
 
 interface PromptInputProps {
   value: string;
@@ -16,9 +15,6 @@ interface PromptInputProps {
   onClearColor?: () => void;
   selectedRatio?: string | null;
   onClearRatio?: () => void;
-  placeholder?: string;
-  className?: string;
-  disabled?: boolean;
 }
 
 export function PromptInput({
@@ -32,26 +28,25 @@ export function PromptInput({
   onClearColor,
   selectedRatio,
   onClearRatio,
-  placeholder = "Don't overthink it, just be yourself",
-  className,
-  disabled,
 }: Readonly<PromptInputProps>) {
   const { toast } = useToast();
+
+  useEffect(() => {
+    // URL injection removed
+  }, [selectedStyle]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
-      if (!isLoading && !disabled) {
-        onSubmit();
-      }
+      onSubmit();
     }
   };
 
   return (
-    <div className={cn("w-full", className)}>
+    <div className="w-full">
       <div className="w-full mx-auto mb-6 mt-2 text-center">
         <h3 className="text-xl md:text-2xl font-medium text-foreground leading-relaxed tracking-tight font-orbitron italic">
-          &nbsp;
+          &quot;If the ink could speak and looked you dead in the eyes — WHO THE FUCK ARE YOU, REALLY? — what would you say?&quot;
         </h3>
       </div>
       <div className="bg-muted/30 border border-border/50 rounded-xl p-4">
@@ -60,12 +55,11 @@ export function PromptInput({
             value={value}
             onChange={(e) => onChange(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder={placeholder}
-            disabled={isLoading || disabled}
+            placeholder="Don't overthink it, just be yourself"
             rows={3}
             className="text-base bg-transparent border border-input rounded-md p-2 resize-none placeholder:text-muted-foreground text-foreground focus-visible:ring-0 focus-visible:ring-offset-0"
           />
-          <div className="flex items-center justify-center pt-1 pb-2">
+          <div className="flex items-center justify-center pt-1 pb-[10px]">
             <div className="flex items-center gap-2">
               <ModeToggle />
               {selectedStyle && (

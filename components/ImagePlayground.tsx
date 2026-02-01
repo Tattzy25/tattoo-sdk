@@ -16,7 +16,7 @@ import { TATTOO_STYLES } from "@/components/Tattoo-Styles/config";
 import { TATTOO_COLORS } from "@/components/Tattoo Colors/config";
 import { TATTOO_RATIOS } from "@/components/Tattoo Aspect Ratio/config";
 import { TattooOption } from "@/lib/api-types";
-import { AnimatedBeamMultipleDemo } from "@/components/TaTTTyFlowAnimation";
+import { ImageComparisonDemo } from "@/components/TaTTTyComparisson";
 
 export function ImagePlayground({}: {}) {
   const {
@@ -176,7 +176,7 @@ export function ImagePlayground({}: {}) {
         </div>
       </div>
 
-      <div className="w-full px-[10px] mx-auto">
+      <div className="w-full px-[10px] mx-auto max-w-7xl">
         <PlaygroundControls
           activeCarousel={activeCarousel}
           onCarouselChange={setActiveCarousel}
@@ -260,24 +260,39 @@ export function ImagePlayground({}: {}) {
         </div>
 
         <div className="flex justify-center w-full mx-auto mt-6">
-          {images.length === 0 || isLoading ? (
-            // Render animation if no images (e.g. initial state) or if generating
-            <div className="w-full">
-              <AnimatedBeamMultipleDemo isGenerating={isLoading} />
-            </div>
-          ) : (
-            images.slice(0, 1).map((img, idx) => (
-              <div key={idx} className="w-full max-w-[500px]">
-                <ImageDisplay
-                  provider={img.provider}
-                  image={img.image}
-                  modelId={img.modelId}
-                  timing={timings[img.provider]}
-                  failed={failedProviders.includes(img.provider)}
-                />
-              </div>
-            ))
-          )}
+          <AnimatePresence mode="wait">
+            {images.length > 0 && !isLoading ? (
+              images.slice(0, 1).map((img, idx) => (
+                <motion.div
+                  key={`result-${idx}`}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.5 }}
+                  className="flex justify-center"
+                >
+                  <ImageDisplay
+                    provider={img.provider}
+                    image={img.image}
+                    modelId={img.modelId}
+                    timing={timings[img.provider]}
+                    failed={failedProviders.includes(img.provider)}
+                  />
+                </motion.div>
+              ))
+            ) : (
+              <motion.div
+                key="comparison"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.5 }}
+                className="flex justify-center pb-[50px]"
+              >
+                <ImageComparisonDemo />
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
 
         {activePrompt && activePrompt.length > 0 && images.length === 0 && (
