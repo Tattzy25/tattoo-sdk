@@ -9,7 +9,6 @@ import { PlaygroundControls } from "@/components/PlaygroundControls/PlaygroundCo
 import { CustomStyleInput } from "@/components/CustomStyleInput/CustomStyleInput";
 import { WelcomeOverlay } from "@/components/WelcomeOverlay/WelcomeOverlay";
 import { ProviderKey } from "@/lib/provider-config";
-import { LiquidMetalButton } from "@/components/ui/liquid-metal-button";
 import { useToast } from "@/hooks/use-toast";
 import { useImageGeneration } from "@/hooks/use-image-generation";
 import { TATTOO_STYLES } from "@/components/Tattoo-Styles/config";

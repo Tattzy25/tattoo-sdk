@@ -1,6 +1,6 @@
 "use client";
 
-import { LiquidMetalButton } from "@/components/ui/liquid-metal-button";
+import { Button } from "@/components/ui/button";
 import { SparklesIcon } from "@/components/ui/sparkles";
 
 interface GenerateButtonProps {
@@ -17,12 +17,15 @@ export function GenerateButton({ onClick, isLoading }: Readonly<GenerateButtonPr
           : "scale-[1.75] origin-center"
       }
     >
-      <LiquidMetalButton
-        label={isLoading ? "INKING..." : "INK ME UP"}
+      <Button
+        variant="default"
+        size="default"
         onClick={onClick}
-        viewMode="text"
-        icon={<SparklesIcon className="w-5 h-5" />}
-      />
+        className="rounded-full px-10 h-14 text-lg font-bold font-[family-name:var(--font-rock-salt)] tracking-widest bg-primary text-primary-foreground hover:bg-primary/90"
+      >
+        <SparklesIcon className="w-6 h-6 mr-4" />
+        {isLoading ? "INKING..." : "INK ME UP"}
+      </Button>
     </div>
   );
 }

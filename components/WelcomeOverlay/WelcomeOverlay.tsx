@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { LiquidMetalButton } from "@/components/ui/liquid-metal-button";
+import { Button } from "@/components/ui/button";
 import { GooeyText } from "@/components/ui/gooey-text-morphing";
 
 import { cn } from "@/lib/utils";
@@ -17,7 +17,7 @@ export function WelcomeOverlay({ onActivate, className }: Readonly<WelcomeOverla
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5, ease: "easeInOut" }}
       className={cn(
-        "relative z-50 flex flex-col items-center justify-center bg-white rounded-xl border-4 border-zinc-300 shadow-sm overflow-hidden px-8 py-[5px] w-full h-auto",
+        "relative z-50 flex flex-col items-center justify-center bg-white rounded-xl shadow-sm overflow-hidden px-8 py-[5px] w-full h-auto",
         className
       )}
     >
@@ -31,12 +31,15 @@ export function WelcomeOverlay({ onActivate, className }: Readonly<WelcomeOverla
             textClassName="text-5xl font-bold tracking-tighter text-black text-center"
           />
         </div>
-        <div className="scale-125 shrink-0">
-          <LiquidMetalButton
-            label="Activate TaTTTy"
+        <div className="scale-125 shrink-0 pb-[5px]">
+          <Button
+            variant="default"
+            size="default"
             onClick={onActivate}
-            viewMode="text"
-          />
+            className="rounded-full px-8 font-bold bg-black text-white hover:bg-black/90"
+          >
+            Activate TaTTTy
+          </Button>
         </div>
       </div>
     </motion.div>

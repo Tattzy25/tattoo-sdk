@@ -1,7 +1,7 @@
  import React, { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { ArrowRight } from "lucide-react";
-import { LiquidMetalButton } from "@/components/ui/liquid-metal-button";
+import { Button } from "@/components/ui/button";
 
 interface CustomStyleInputProps {
   isVisible: boolean;
@@ -36,15 +36,14 @@ export function CustomStyleInput({
           className="flex-1"
           autoFocus
         />
-        <div className="scale-[0.8]">
-          <LiquidMetalButton
-            label=""
-            viewMode="icon"
-            icon={<ArrowRight className="h-4 w-4" />}
-            animate={true}
-            onClick={() => handleSubmit()}
-          />
-        </div>
+        <Button
+          size="icon"
+          variant="default"
+          className="rounded-full"
+          onClick={() => handleSubmit()}
+        >
+          <ArrowRight className="h-4 w-4" />
+        </Button>
       </form>
     </div>
   );

@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { Card } from "@/components/ui/card";
 import { TattooOption } from "@/lib/api-types";
-import { LiquidMetalButton } from "@/components/ui/liquid-metal-button";
+import { Badge } from "@/components/ui/badge";
 
 interface CarouselItemProps {
   option: TattooOption;
@@ -35,16 +35,6 @@ function CarouselItem({ option, isSelected, onClick, selectedClassName }: Carous
       `}
     >
       <div className="relative w-32 aspect-[4/5]">
-        {option.isHot && (
-          <div className="absolute -top-3 -right-3 z-20 scale-[0.6] origin-center pointer-events-none">
-            <LiquidMetalButton
-              label=""
-              viewMode="icon"
-              icon={<span className="text-2xl">🔥</span>}
-              animate={true}
-            />
-          </div>
-        )}
         <Card
           className={`
             w-full h-full p-1.5 overflow-hidden transition-all duration-200
@@ -65,12 +55,16 @@ function CarouselItem({ option, isSelected, onClick, selectedClassName }: Carous
           </div>
         </Card>
       </div>
-      <span className={`
-        text-sm font-medium tracking-wide transition-colors duration-200
-        ${isSelected ? "text-primary font-bold" : "text-muted-foreground group-hover:text-foreground"}
-      `}>
+      <Badge
+        variant="default"
+        className={`
+          rounded-full bg-white text-black hover:bg-white/90 border border-black/10 px-3 py-0.5
+          text-xs font-bold tracking-wide transition-all duration-200 whitespace-nowrap
+          ${isSelected ? "ring-2 ring-primary ring-offset-2" : ""}
+        `}
+      >
         {option.label}
-      </span>
+      </Badge>
     </div>
   );
 }

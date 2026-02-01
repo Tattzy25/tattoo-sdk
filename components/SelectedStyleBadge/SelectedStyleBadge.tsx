@@ -1,5 +1,5 @@
 import React from "react";
-import { LiquidMetalButton } from "@/components/ui/liquid-metal-button";
+import { Button } from "@/components/ui/button";
 import { getStyleLabel } from "@/lib/utils";
 
 interface SelectedStyleBadgeProps {
@@ -17,11 +17,13 @@ export function SelectedStyleBadge({
   const label = selectedStyle;
 
   return (
-    <LiquidMetalButton
-      label={label}
+    <Button
+      variant="default"
+      size="sm"
       onClick={onClear}
-      viewMode="text"
-      animate={true}
-    />
+      className="rounded-full"
+    >
+      {label}
+    </Button>
   );
 }

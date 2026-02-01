@@ -1,16 +1,23 @@
  import type { Metadata } from "next";
  import localFont from "next/font/local";
- import { Orbitron } from "next/font/google";
- import "./globals.css";
- import { Analytics } from "@vercel/analytics/react";
- import { ThemeProvider } from "@/components/theme-provider";
+ import { Orbitron, Rock_Salt } from "next/font/google";
+import "./globals.css";
+import { Analytics } from "@vercel/analytics/react";
+import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/toaster";
 
 const orbitron = Orbitron({
-   subsets: ["latin"],
-   variable: "--font-orbitron",
-   display: "swap",
- });
+  subsets: ["latin"],
+  variable: "--font-orbitron",
+  display: "swap",
+});
+
+const rockSalt = Rock_Salt({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-rock-salt",
+  display: "swap",
+});
  
  const geistSans = localFont({
    src: "./fonts/GeistVF.woff",
@@ -35,10 +42,10 @@ const orbitron = Orbitron({
  }>) {
    return (
      <html
-       lang="en"
-       suppressHydrationWarning
-       className={`${geistSans.variable} ${geistMono.variable} ${orbitron.variable}`}
-     >
+        lang="en"
+        suppressHydrationWarning
+        className={`${geistSans.variable} ${geistMono.variable} ${orbitron.variable} ${rockSalt.variable}`}
+      >
        <body className="font-sans antialiased">
          <ThemeProvider
            attribute="class"
