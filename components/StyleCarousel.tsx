@@ -121,9 +121,7 @@ export function StyleCarousel({
         {/* Center the carousel contents while keeping horizontal scroll on small screens */}
         <div className="flex justify-center gap-6 px-2 sm:px-4 py-[10px]">
           {options.map((option, idx) => {
-            // Special sentinel for divider - currently we don't have this in the config, 
-            // but if we did, we'd handle it. 
-            // For now, let's assume all options are valid cards.
+        
 
             const selectedIds = selected ?? internalSelected;
 
