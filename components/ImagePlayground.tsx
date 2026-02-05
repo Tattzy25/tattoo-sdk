@@ -1,11 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { useState } from "react";
+import { AnimatePresence } from "framer-motion";
 import { ImageDisplay } from "@/components/ImageDisplay";
 import { PromptInput } from "@/components/PromptInput";
 import { StyleCarousel } from "@/components/StyleCarousel";
-import { PlaygroundControls } from "@/components/PlaygroundControls/PlaygroundControls";
 import { CustomStyleInput } from "@/components/CustomStyleInput/CustomStyleInput";
 import { WelcomeOverlay } from "@/components/WelcomeOverlay/WelcomeOverlay";
 import { ProviderKey } from "@/lib/provider-config";
@@ -34,7 +33,6 @@ export function ImagePlayground({}: {}) {
   } = useImageGeneration();
 
   const [promptInput, setPromptInput] = useState("");
-  const [activeCarousel, setActiveCarousel] = useState<"style" | "vibe">("style");
   
   // Initialize with defaults as requested ("except the defaults that I have")
   const [selectedStyleId, setSelectedStyleId] = useState<string | null>(null);
@@ -137,8 +135,9 @@ export function ImagePlayground({}: {}) {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground p-4">
-      <div className="max-w-5xl mx-auto">
+    <div className="min-h-screen bg-background text-foreground">
+      {/* Prompt + controls area: full width with exactly 10px side padding */}
+      <div className="px-[10px] pt-4">
         <div className="relative mb-4">
           <AnimatePresence>
             {!isActivated && (
@@ -168,59 +167,44 @@ export function ImagePlayground({}: {}) {
             />
           </div>
         </div>
-        
-        <PlaygroundControls
-          activeCarousel={activeCarousel}
-          onCarouselChange={setActiveCarousel}
-        />
+        <div className="mt-2 space-y-4">
+          {/* Always-rendered Style carousel */}
+          <StyleCarousel
+            visible={true}
+            options={TATTOO_STYLES}
+            onSelect={(option) => {
+              setSelectedStyleId(option.id);
+            }}
+            selected={selectedStyleId}
+            emptyMessage="No styles available."
+          />
 
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={activeCarousel}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.2 }}
-          >
-            <StyleCarousel
-              visible={true}
-              options={activeCarousel === "style" ? TATTOO_STYLES : vibeOptions}
-              onSelect={(option) => {
-                if (activeCarousel === "style") {
-                  setSelectedStyleId(option.id);
-                } else {
-                  // Vibe logic: clearly distinguish using the 'group' property
-                  if (option.group === "color") {
-                    setSelectedColorId(option.id);
-                  } else if (option.group === "ratio") {
-                    setSelectedRatioId(option.id);
-                  }
-                }
-              }}
-              selected={
-                activeCarousel === "style"
-                  ? selectedStyleId
-                  : [selectedColorId, selectedRatioId].filter((s): s is string => !!s)
+          {/* Always-rendered Vibe carousel (colors + ratios) below style */}
+          <StyleCarousel
+            visible={true}
+            options={vibeOptions}
+            onSelect={(option) => {
+              // Vibe logic: clearly distinguish using the 'group' property
+              if (option.group === "color") {
+                setSelectedColorId(option.id);
+              } else if (option.group === "ratio") {
+                setSelectedRatioId(option.id);
               }
-              emptyMessage={
-                activeCarousel === "style"
-                  ? "No styles available."
-                  : "No vibes available."
-              }
-            />
-          </motion.div>
-        </AnimatePresence>
+            }}
+            selected={[selectedColorId, selectedRatioId].filter((s): s is string => !!s)}
+            emptyMessage="No vibes available."
+          />
+        </div>
 
         <CustomStyleInput
-          isVisible={activeCarousel === "style" && selectedStyleId === "custom-style"}
+          isVisible={selectedStyleId === "custom-style"}
           onSubmit={(style) => setCustomStyle(style)}
         />
         
         <CustomStyleInput
-          isVisible={activeCarousel === "vibe" && selectedColorId === "custom-color"}
+          isVisible={selectedColorId === "custom-color"}
           onSubmit={(color) => setCustomColor(color)}
         />
-
         <div className="flex justify-center my-20 py-12 relative z-10">
           <div className={isLoading ? "opacity-50 pointer-events-none scale-[1.75] origin-center" : "scale-[1.75] origin-center"}>
             <LiquidMetalButton
@@ -230,7 +214,10 @@ export function ImagePlayground({}: {}) {
             />
           </div>
         </div>
+      </div>
 
+      {/* Image display area left as-centered block; not part of the 10px prompt padding rule */}
+      <div className="max-w-5xl mx-auto px-4 pb-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-4xl mx-auto mt-6">
           {images.length === 0 ? (
             // Render placeholders if no images (e.g. initial state)

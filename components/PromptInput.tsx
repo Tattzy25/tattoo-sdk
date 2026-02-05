@@ -57,7 +57,7 @@ export function PromptInput({
             onKeyDown={handleKeyDown}
             placeholder="Don't overthink it, just be yourself"
             rows={3}
-            className="text-base bg-transparent border border-zinc-300 rounded-md p-2 resize-none placeholder:text-zinc-500 text-[#111111] focus-visible:ring-0 focus-visible:ring-offset-0"
+            className="text-[22px] bg-transparent border border-zinc-300 rounded-md p-2 resize-none placeholder:text-zinc-500 text-[#111111] focus-visible:ring-0 focus-visible:ring-offset-0"
           />
           <div className="flex items-center justify-center pt-1 pb-[10px]">
             <div className="flex items-center gap-2">
