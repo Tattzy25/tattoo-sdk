@@ -14,7 +14,7 @@ interface CarouselItemProps {
 
 function CarouselItem({ option, isSelected, onClick, selectedClassName }: CarouselItemProps) {
   const [isHovered, setIsHovered] = useState(false);
-  const isPressed = false; // We can add press state if needed, but hover/select is main focus
+  const [isPressed, setIsPressed] = useState(false);
 
   // Shadow logic copied from LiquidMetalButton to match the effect
   const boxShadow = isSelected
@@ -27,18 +27,28 @@ function CarouselItem({ option, isSelected, onClick, selectedClassName }: Carous
     <button
       onClick={onClick}
       onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onMouseLeave={() => {
+        setIsHovered(false);
+        setIsPressed(false);
+      }}
+      onMouseDown={() => setIsPressed(true)}
+      onMouseUp={() => setIsPressed(false)}
+      onTouchStart={() => setIsPressed(true)}
+      onTouchEnd={() => setIsPressed(false)}
       aria-label={`Select ${option.label}`}
+      aria-pressed={isSelected}
       data-selected={isSelected ? "true" : undefined}
       className={`
-        group relative flex-shrink-0 w-32 flex flex-col items-center gap-3 transition-all duration-200
-        ${isSelected ? "scale-[1.05]" : "hover:scale-[1.02]"}
+        group relative flex-shrink-0 w-48 flex flex-col items-center gap-3 transition-all duration-150
+        ${isPressed ? "scale-[0.96]" : isSelected ? "scale-[1.05]" : "hover:scale-[1.02]"}
         ${selectedClassName ?? ""}
       `}
     >
       <div 
         className={`
-          relative w-32 aspect-[4/5] rounded-lg overflow-hidden transition-all duration-200
+          relative w-48 aspect-[4/5] rounded-lg overflow-hidden transition-all duration-200
+          border-2 border-transparent
+          ${isSelected ? "border-[#39ff14] ring-4 ring-[#39ff14] ring-offset-4 ring-offset-black" : ""}
         `}
         style={{
           boxShadow: boxShadow,
@@ -104,9 +114,10 @@ export function StyleCarousel({
   }
 
   return (
-    <div className="mt-4">
+    <div className="mt-4 w-full">
       <div className="overflow-x-auto hide-scrollbar">
-        <div className="flex gap-6 px-4 py-[10px]">
+        {/* Center the carousel contents while keeping horizontal scroll on small screens */}
+        <div className="flex justify-center gap-6 px-2 sm:px-4 py-[10px]">
           {options.map((option, idx) => {
             // Special sentinel for divider - currently we don't have this in the config, 
             // but if we did, we'd handle it. 

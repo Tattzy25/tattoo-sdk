@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
-import { AnimatePresence } from "framer-motion";
+import { useState, useEffect } from "react";
+import Image from "next/image";
+import { AnimatePresence, motion } from "framer-motion";
 import { ImageDisplay } from "@/components/ImageDisplay";
 import { PromptInput } from "@/components/PromptInput";
 import { StyleCarousel } from "@/components/StyleCarousel";
@@ -9,6 +10,7 @@ import { CustomStyleInput } from "@/components/CustomStyleInput/CustomStyleInput
 import { WelcomeOverlay } from "@/components/WelcomeOverlay/WelcomeOverlay";
 import { ProviderKey } from "@/lib/provider-config";
 import { LiquidMetalButton } from "@/components/ui/liquid-metal-button";
+import ModernLoader from "@/components/ui/modern-loader";
 import { useToast } from "@/hooks/use-toast";
 import { useImageGeneration } from "@/hooks/use-image-generation";
 import { 
@@ -30,6 +32,7 @@ export function ImagePlayground({}: {}) {
     isLoading,
     startGeneration,
     activePrompt,
+    errors,
   } = useImageGeneration();
 
   const [promptInput, setPromptInput] = useState("");
@@ -56,6 +59,19 @@ export function ImagePlayground({}: {}) {
   const vibeOptions: TattooOption[] = [...TATTOO_COLORS, dividerOption, ...TATTOO_RATIOS];
 
   const { toast } = useToast();
+
+  // Surface backend / generation errors to the user instead of failing silently
+  useEffect(() => {
+    if (!errors || errors.length === 0) return;
+
+    const firstError = errors[0];
+
+    toast({
+      title: "Image generation failed",
+      description: firstError.error || "Something went wrong while generating your tattoo image.",
+      variant: "destructive",
+    });
+  }, [errors, toast]);
 
   const handlePromptSubmit = () => {
     const newPrompt = promptInput;
@@ -216,12 +232,13 @@ export function ImagePlayground({}: {}) {
         </div>
       </div>
 
-      {/* Image display area left as-centered block; not part of the 10px prompt padding rule */}
+      {/* Image display area: keep layout, but overlay 2FACE.jpg with rounded corners while loading */}
       <div className="max-w-5xl mx-auto px-4 pb-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-4xl mx-auto mt-6">
-          {images.length === 0 ? (
-            // Render placeholders if no images (e.g. initial state)
-             [0, 1].map((idx) => (
+        <div className="relative max-w-4xl mx-auto mt-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 rounded-2xl overflow-hidden">
+            {images.length === 0 ? (
+              // Render placeholders if no images (e.g. initial state)
+              [0, 1].map((idx) => (
                 <ImageDisplay
                   key={`placeholder-${idx}`}
                   provider={`Slot ${idx + 1}`}
@@ -229,19 +246,58 @@ export function ImagePlayground({}: {}) {
                   modelId=""
                   failed={false}
                 />
-             ))
-          ) : (
-            images.map((img, idx) => (
-              <ImageDisplay
-                key={idx}
-                provider={img.provider}
-                image={img.image}
-                modelId={img.modelId}
-                timing={timings[img.provider]}
-                failed={failedProviders.includes(img.provider)}
-              />
-            ))
-          )}
+              ))
+            ) : (
+              images.map((img, idx) => (
+                <ImageDisplay
+                  key={idx}
+                  provider={img.provider}
+                  image={img.image}
+                  modelId={img.modelId}
+                  timing={timings[img.provider]}
+                  failed={failedProviders.includes(img.provider)}
+                />
+              ))
+            )}
+          </div>
+
+          {/* Idle state overlay: show 2FACE image until generation starts */}
+          <AnimatePresence>
+            {images.length === 0 && !isLoading && (
+              <motion.div
+                key="idle-2face"
+                initial={{ opacity: 1 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+                className="absolute inset-0 rounded-2xl overflow-hidden bg-black/80 flex items-center justify-center z-20"
+              >
+                <Image
+                  src="/2FACE.jpg"
+                  alt="Tattoo preview"
+                  fill
+                  className="object-cover"
+                  priority
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Loading state overlay: fade in ModernLoader while images generate */}
+          <AnimatePresence>
+            {isLoading && (
+              <motion.div
+                key="loader-overlay"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+                className="absolute inset-0 rounded-2xl overflow-hidden bg-black/90 flex items-center justify-center z-30"
+              >
+                <ModernLoader />
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
 
         {activePrompt && activePrompt.length > 0 && (

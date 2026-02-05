@@ -44,7 +44,7 @@ export function PromptInput({
 
   return (
     <div className="w-full">
-      <div className="bg-zinc-50 rounded-xl p-4">
+      <div className="bg-zinc-50 rounded-2xl p-4 border border-zinc-700 shadow-[0_20px_60px_rgba(0,0,0,0.45)]">
         <div className="flex flex-col gap-3">
           <div className="w-full px-2 mx-auto mb-6 mt-2 text-center">
             <h3 className="text-2xl md:text-3xl font-medium text-zinc-900 leading-relaxed tracking-tight font-orbitron italic">
@@ -57,7 +57,7 @@ export function PromptInput({
             onKeyDown={handleKeyDown}
             placeholder="Don't overthink it, just be yourself"
             rows={3}
-            className="text-[22px] bg-transparent border border-zinc-300 rounded-md p-2 resize-none placeholder:text-zinc-500 text-[#111111] focus-visible:ring-0 focus-visible:ring-offset-0"
+            className="text-[22px] md:text-[22px] bg-transparent border border-zinc-400 rounded-md p-2 resize-none placeholder:text-zinc-500 text-[#111111] focus-visible:ring-2 focus-visible:ring-zinc-300 focus-visible:ring-offset-0"
           />
           <div className="flex items-center justify-center pt-1 pb-[10px]">
             <div className="flex items-center gap-2">
