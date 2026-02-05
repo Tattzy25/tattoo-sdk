@@ -47,8 +47,8 @@ function CarouselItem({ option, isSelected, onClick, selectedClassName }: Carous
       <div 
         className={`
           relative w-48 aspect-[4/5] rounded-lg overflow-hidden transition-all duration-200
-          border-2 border-transparent
-          ${isSelected ? "border-[#39ff14] ring-4 ring-[#39ff14] ring-offset-4 ring-offset-black" : ""}
+          border-[3px] border-transparent
+          ${isSelected ? "border-[#c084fc] ring-[3px] ring-[#c084fc] ring-offset-4 ring-offset-black" : ""}
         `}
         style={{
           boxShadow: boxShadow,
